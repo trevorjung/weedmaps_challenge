@@ -23,6 +23,10 @@ const searchButtonStyle = {
 class App extends Component {
   state = {};
 
+  async componentDidMount() {
+    await fetch('fruits').then(res => res.json()).then(result => this.setState({ fruits: result }));
+  }
+
   handleChange = (e) => {
     const dataLabel = e.target.placeholder;
     this.setState({ [dataLabel]: e.target.value })
