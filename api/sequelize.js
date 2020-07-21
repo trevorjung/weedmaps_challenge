@@ -1,9 +1,7 @@
 const Sequelize = require('sequelize')
-const FruitModel = require('./models/fruit')
-const fruitData = [{name:'strawberry', weight: 12, url: '/images/strawberry.jpg'},
-{name:'apple', weight: 100, url: '/images/apple.jpg'}, {name:'orange', weight: 141, url: '/images/orange.jpg'}, 
-{name:'raspberry', weight: 4, url: '/images/raspberry.jpg'}, {name:'banana', weight: 118, url: '/images/banana.jpg'},
-{name:'peach', weight: 150, url: '/images/peach.jpg'}, {name:'mango', weight: 336, url: '/images/mango.jpg'}];
+const UserModel = require('./models/user')
+const MedRecModel = require('./models/medRec')
+const IdModel = require('./models/id')
 
 const sequelize = new Sequelize('challenge_app', 'root', 'home1382', {
   host: 'localhost',
@@ -16,14 +14,23 @@ const sequelize = new Sequelize('challenge_app', 'root', 'home1382', {
   }
 })
 
-const Fruit = FruitModel(sequelize, Sequelize)
+const User = UserModel(sequelize, Sequelize)
+const MedRec = MedRecModel(sequelize, Sequelize)
+const GovernmentId = IdModel(sequelize, Sequelize)
+
+User.hasMany(MedRec, {foreignKey: 'user_id'});
+User.belongsTo(GovernmentId, {foreignKey: 'user_id'});
 
 sequelize.sync({ force: true })
   .then(() => {
     console.log(`Database & tables created!`);
-    Fruit.bulkCreate(fruitData);
+    User.create({ name: 'Dummy', email: 'Test@Test', birthday:'10-15-90' });
+    GovernmentId.create({ governmentIdNumber: 321, state:'Minnesota', expirationDate: '10-15-1990', imageUrl: 'testpathurl', user_id: 1 });
+    MedRec.create({ medRecId: 123, issuer: 'Issuer', state:'Minnesota', expirationDate: '10-15-2020', imageUrl: 'testpathurl', user_id: 1 });
   })
 
 module.exports = {
-  Fruit
+  User,
+  MedRec,
+  GovernmentId
 }
