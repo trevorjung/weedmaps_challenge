@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import FruitCard from './FruitCard.js';
 import './App.css';
+
 const formStyle = { marginTop: '5%' };
 const warningStyle = { color: 'red', marginTop: '10%' };
 const nameInput = {
